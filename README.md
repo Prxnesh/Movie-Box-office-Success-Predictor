@@ -4,8 +4,7 @@ A multi-page Streamlit web application that uses machine learning to predict a m
 
 This V2 build features a robust multi-page interface, batch prediction capabilities, and an analytics dashboard, all powered by a GradientBoosting model with ~73-79% accuracy.
 
-![App Screenshot](https://i.imgur.com/example.png) 
-*(Suggestion: Run your app, take a screenshot, upload it to GitHub or Imgur, and replace this link!)*
+
 
 ## ✨ Key Features (V2)
 
@@ -43,7 +42,7 @@ Follow these instructions to set up and run the project on your local machine.
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/Prxnesh/Movie-Box-office-Success-Predictor.git](https://github.com/Prxnesh/Movie-Box-office-Success-Predictor.git)
+    git clone https://github.com/Prxnesh/Movie-Box-office-Success-Predictor.git
     cd Movie-Box-office-Success-Predictor
     ```
 
