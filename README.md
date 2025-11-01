@@ -49,3 +49,91 @@ Built with advanced ML models (**GradientBoosting**, **RandomForest**, and optio
 ```bash
 git clone https://github.com/<your-username>/Movie-Box-Office-Success-Predictor.git
 cd Movie-Box-Office-Success-Predictor
+Create and Activate Virtual Environment
+python -m venv .venv
+.\.venv\Scripts\activate    # On Windows
+# OR
+source .venv/bin/activate   # On macOS/Linux
+
+3️⃣ Install Dependencies
+pip install -r requirements.txt
+
+
+Or install manually if requirements.txt not yet added:
+
+pip install streamlit pandas scikit-learn imbalanced-learn joblib plotly streamlit-option-menu
+
+⚙️ Usage
+🧠 Step 1: Train the Models
+
+Run the training script to generate model artifacts (.joblib files):
+
+python movie_predictor_train.py
+
+
+You’ll see accuracy and model stats in your terminal.
+
+💻 Step 2: Run the Streamlit App
+
+V1 (basic app):
+
+streamlit run app.py
+
+
+V2 (enhanced multi-page app):
+
+streamlit run app_v2.py
+
+
+Then open your browser at 👉 http://localhost:8501
+
+📊 Results
+Model	Accuracy	Best Algorithm
+Success Classifier	73.45%	GradientBoosting
+Collection Range	79.12%	GradientBoosting
+📁 Project Structure
+Movie-Box-Office-Success-Predictor/
+│
+├── app.py                      # Original app
+├── app_v2.py                   # Enhanced V2 app (multi-page)
+├── movie_predictor_train.py    # Model training script
+├── preprocessor.joblib         # Saved data preprocessor
+├── success_classifier_model.joblib
+├── collection_range_model.joblib
+├── metadata.joblib
+│
+├── pages/
+│   ├── __init__.py
+│   ├── home.py
+│   ├── single_prediction.py
+│   ├── batch_predictions.py
+│   ├── analytics.py
+│   ├── compare.py
+│   └── about.py
+│
+├── data/                       # (Optional) Dataset files
+└── README.md
+
+💡 Future Enhancements (Planned for V3)
+
+✨ Add XGBoost & hyperparameter tuning
+
+🧩 SHAP explainability (“why did the model predict this?”)
+
+🧮 Integration with TMDB API for real movie metadata
+
+☁️ Cloud deployment (Streamlit Cloud / Hugging Face Spaces)
+
+📱 Mobile-responsive UI
+
+👨‍💻 Author
+
+Pranesh Dharani
+🎓 Computer Science Engineering @ SRMIST Chennai
+📧 [Add your email or portfolio link if you want]
+
+🧠 Acknowledgements
+
+Dataset inspired by IMDb, TMDB, and Kaggle movie datasets.
+
+Built with ❤️ using Python and Streamlit.
