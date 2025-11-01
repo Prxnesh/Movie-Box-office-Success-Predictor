@@ -1,139 +1,75 @@
-# 🎬 Movie Box Office Success Predictor V2
+# 🎬 Movie Box Office Success Predictor (V2)
 
-A **Machine Learning–powered Streamlit web app** that predicts a movie’s **success potential** and **box office collection range** based on its attributes — like genre, budget, director, actors, and more.
+A multi-page Streamlit web application that uses machine learning to predict a movie's potential box office success (Flop, Hit, or Blockbuster) and its estimated gross collection range.
 
-Built with advanced ML models (**GradientBoosting**, **RandomForest**, and optional **XGBoost**), this project offers **real-time predictions**, **data analytics**, **batch processing**, and **insights visualization** — all in a beautiful multi-page UI.
+This V2 build features a robust multi-page interface, batch prediction capabilities, and an analytics dashboard, all powered by a GradientBoosting model with ~73-79% accuracy.
 
----
+![App Screenshot](https://i.imgur.com/example.png) 
+*(Suggestion: Run your app, take a screenshot, upload it to GitHub or Imgur, and replace this link!)*
 
-## 🚀 Features
+## ✨ Key Features (V2)
 
-### 🧠 Machine Learning
-- Predicts **movie success level** (`Flop`, `Hit`, `Blockbuster`)
-- Predicts **box office collection range** (`Low`, `Moderate`, `High`, `Very High`)
-- Built with **GradientBoosting**, **RandomForest**, and **SMOTE balancing**
-- Achieved up to **73% accuracy (Success Classifier)** and **79% accuracy (Collection Range Classifier)**
+* **🏠 Home Dashboard:** A quick overview of the project and model performance.
+* **🎬 Single Prediction:** The core predictor. Enter a movie's details (budget, genre, director, actors, etc.) and get an instant prediction for its success and collection.
+* **📊 Batch Predictions:** Upload a CSV file with multiple movies to get predictions for your entire slate.
+* **📈 Analytics & Insights:** An interactive dashboard (using Plotly) to explore the training data and understand relationships between features like budget, rating, and gross.
+* **🔍 Movie Comparisons:** A side-by-side tool to compare the predicted outcomes of two different movie scenarios.
+* **🤖 High-Accuracy Models:** Utilizes `GradientBoosting` and `SMOTE` to handle class imbalance, achieving:
+    * **73.5% Accuracy** for Success Classification (Flop/Hit/Blockbuster)
+    * **79.1% Accuracy** for Collection Range Classification
 
-### 🧩 Application Pages
-| Page | Description |
-|------|--------------|
-| 🏠 **Home** | Overview and quick project summary |
-| 🎬 **Single Prediction** | Enter movie details and get instant predictions |
-| 📊 **Batch Predictions** | Upload a CSV with multiple movies and get predictions |
-| 📈 **Analytics Dashboard** | Visualize model accuracy, feature importance, and trends |
-| 🔍 **Compare** | Compare two movie scenarios side-by-side |
-| ℹ️ **About** | Info about the model, dataset, and developers |
+## 💻 Tech Stack
 
-### 🎨 UI/UX Highlights
-- Multi-page navigation (via sidebar)
-- Interactive charts using **Plotly**
-- Modern gradient design with custom themes
-- Searchable dropdowns and autocomplete inputs
-- CSV export & prediction history tracking
+* **Python**
+* **Streamlit:** For the multi-page web interface.
+* **Scikit-learn:** For machine learning pipelines, feature engineering, and models (GradientBoosting).
+* **Pandas:** For data manipulation and processing.
+* **Imbalanced-learn:** For using SMOTE to correct class imbalance.
+* **Plotly:** For interactive data visualizations on the Analytics page.
+* **Streamlit-Searchbox:** For user-friendly autocomplete dropdowns.
 
 ---
 
-## 🧰 Tech Stack
+## 🚀 Getting Started
 
-**Frontend:** [Streamlit](https://streamlit.io)  
-**Backend / ML:** scikit-learn, imbalanced-learn, joblib  
-**Data Visualization:** Plotly  
-**Language:** Python 3.11+  
-**Deployment:** Streamlit Cloud / Local  
+Follow these instructions to set up and run the project on your local machine.
 
----
+### 1. Prerequisites
 
-## 📦 Installation
+* Python 3.8+
+* Git
 
-### 1️⃣ Clone the Repository
+### 2. Installation & Setup
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/Prxnesh/Movie-Box-office-Success-Predictor.git](https://github.com/Prxnesh/Movie-Box-office-Success-Predictor.git)
+    cd Movie-Box-office-Success-Predictor
+    ```
+
+2.  **Create and activate a virtual environment:**
+    ```bash
+    # Windows
+    python -m venv .venv
+    .\.venv\Scripts\Activate.ps1
+    ```
+
+3.  **Install the required libraries:**
+    *First, create a `requirements.txt` file if you don't have one. You can add the libraries from our chat or run `pip freeze > requirements.txt` after installing them.*
+
+    ```bash
+    # Key requirements to install
+    pip install streamlit pandas scikit-learn plotly imbalanced-learn streamlit-option-menu streamlit-searchbox
+    
+    # Or, if you have a requirements.txt file:
+    pip install -r requirements.txt
+    ```
+
+### 3. ❗ Important: Train the Models
+
+You must run the training script first. This will generate the `.joblib` files (`success_classifier_model.joblib`, `collection_range_model.joblib`, `preprocessor.joblib`, and `metadata.joblib`) that the Streamlit app needs to run.
+
+**This step fixes the `NameError: name 'metadata' is not defined` and `FileNotFoundError`.**
+
 ```bash
-git clone https://github.com/<your-username>/Movie-Box-Office-Success-Predictor.git
-cd Movie-Box-Office-Success-Predictor
-Create and Activate Virtual Environment
-python -m venv .venv
-.\.venv\Scripts\activate    # On Windows
-# OR
-source .venv/bin/activate   # On macOS/Linux
-
-3️⃣ Install Dependencies
-pip install -r requirements.txt
-
-
-Or install manually if requirements.txt not yet added:
-
-pip install streamlit pandas scikit-learn imbalanced-learn joblib plotly streamlit-option-menu
-
-⚙️ Usage
-🧠 Step 1: Train the Models
-
-Run the training script to generate model artifacts (.joblib files):
-
 python movie_predictor_train.py
-
-
-You’ll see accuracy and model stats in your terminal.
-
-💻 Step 2: Run the Streamlit App
-
-V1 (basic app):
-
-streamlit run app.py
-
-
-V2 (enhanced multi-page app):
-
-streamlit run app_v2.py
-
-
-Then open your browser at 👉 http://localhost:8501
-
-📊 Results
-Model	Accuracy	Best Algorithm
-Success Classifier	73.45%	GradientBoosting
-Collection Range	79.12%	GradientBoosting
-📁 Project Structure
-Movie-Box-Office-Success-Predictor/
-│
-├── app.py                      # Original app
-├── app_v2.py                   # Enhanced V2 app (multi-page)
-├── movie_predictor_train.py    # Model training script
-├── preprocessor.joblib         # Saved data preprocessor
-├── success_classifier_model.joblib
-├── collection_range_model.joblib
-├── metadata.joblib
-│
-├── pages/
-│   ├── __init__.py
-│   ├── home.py
-│   ├── single_prediction.py
-│   ├── batch_predictions.py
-│   ├── analytics.py
-│   ├── compare.py
-│   └── about.py
-│
-├── data/                       # (Optional) Dataset files
-└── README.md
-
-💡 Future Enhancements (Planned for V3)
-
-✨ Add XGBoost & hyperparameter tuning
-
-🧩 SHAP explainability (“why did the model predict this?”)
-
-🧮 Integration with TMDB API for real movie metadata
-
-☁️ Cloud deployment (Streamlit Cloud / Hugging Face Spaces)
-
-📱 Mobile-responsive UI
-
-👨‍💻 Author
-
-Pranesh Dharani
-🎓 Computer Science Engineering @ SRMIST Chennai
-📧 [Add your email or portfolio link if you want]
-
-🧠 Acknowledgements
-
-Dataset inspired by IMDb, TMDB, and Kaggle movie datasets.
-
-Built with ❤️ using Python and Streamlit.
