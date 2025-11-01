@@ -73,3 +73,33 @@ You must run the training script first. This will generate the `.joblib` files (
 
 ```bash
 python movie_predictor_train.py
+```
+You will see the accuracy metrics printed in your terminal as the models are trained and saved.
+
+4.  **Run the Streamlit App**
+
+    Now that the models and metadata are saved, you can launch the V2 application:
+    ```bash
+    streamlit run app_v2.py
+    ```
+    Your app will open automatically in your web browser at `http://localhost:8501`.
+
+---
+
+## 📈 Model Performance
+
+The initial simple model had low accuracy. The current models were significantly improved using advanced feature engineering, `SMOTE` to handle imbalanced data, and by comparing `RandomForest` and `GradientBoosting` to select the best performer.
+
+| Classifier | Baseline Accuracy | V2 Model Accuracy |
+| :--- | :---: | :---: |
+| **Success (Flop/Hit/Blockbuster)** | ~49.1% | **73.45%** |
+| **Collection Range** | ~61.9% | **79.12%** |
+
+**Key Improvements:**
+* **Feature Engineering:** Added `log_budget`, `director_avg_gross`, `actor_avg_gross`, and interaction features.
+* **Class Imbalance:** Implemented `SMOTE` to prevent the model from only predicting "Flop."
+* **Algorithm:** Switched to `GradientBoostingClassifier`, which outperformed `RandomForest`.
+
+## License
+
+This project is licensed under the MIT License.
