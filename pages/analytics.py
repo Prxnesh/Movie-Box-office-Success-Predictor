@@ -87,8 +87,9 @@ def show():
         'Importance': [0.25, 0.20, 0.18, 0.15, 0.10, 0.06, 0.04, 0.02]
     }).sort_values('Importance', ascending=True)
     
-    fig = px.barh(feature_importance, x='Importance', y='Feature',
+    fig = px.bar(feature_importance, x='Importance', y='Feature',
                  title='Top Features Impacting Predictions',
+                 orientation='h',
                  color='Importance',
                  color_continuous_scale='Viridis')
     fig.update_layout(height=400)
