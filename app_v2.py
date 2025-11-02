@@ -98,19 +98,22 @@ with st.sidebar:
     st.metric("Collection Accuracy", "79.12%")
     st.metric("Total Predictions", len(st.session_state.prediction_history))
 
-# Import page modules
-from pages import home, single_prediction, batch_predictions, analytics, compare, about
-
 # Route to selected page
 if selected == "Home":
+    from pages import home
     home.show(metadata)
 elif selected == "Single Prediction":
+    from pages import single_prediction
     single_prediction.show(success_model, collection_model, metadata)
 elif selected == "Batch Predictions":
+    from pages import batch_predictions
     batch_predictions.show(success_model, collection_model, metadata)
 elif selected == "Analytics":
+    from pages import analytics
     analytics.show()
 elif selected == "Compare Movies":
+    from pages import compare
     compare.show(success_model, collection_model, metadata)
 elif selected == "About":
+    from pages import about
     about.show()
