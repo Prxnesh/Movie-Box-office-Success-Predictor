@@ -1,4 +1,4 @@
-```markdown
+
 # 🎬 Movie Box Office Success Predictor
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
