@@ -7,7 +7,7 @@
 
 An AI-powered web application that predicts movie box office success using machine learning. Built with Streamlit, scikit-learn, and Gradient Boosting models.
 
-![Demo Screenshot](https://via.placeholder.com/800x400?text=Add+Your+Screenshot+Here)
+
 
 ## ✨ Features
 
@@ -333,25 +333,17 @@ Contributions are welcome! Please follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👤 Author
 
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your Name](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
 
 ## 🙏 Acknowledgments
 
-- Dataset: [IMDb Movie Database](https://www.imdb.com/) (or your data source)
+- Dataset: [IMDb Movie Database](https://www.imdb.com/) 
 - Inspiration: Box office analysis and prediction research
 - Built with: Streamlit, scikit-learn, Plotly
 
-## 📞 Support
 
-For support, please:
-1. Check the [Troubleshooting](#-troubleshooting) section
-2. Open an issue on GitHub
-3. Contact: your.email@example.com
+
+
 
 ## 🌟 Show Your Support
 
