@@ -1,3 +1,4 @@
+```markdown
 # 🎬 Movie Box Office Success Predictor
 
 ![Python](https://img.shields.io/badge/python-3.8+-blue.svg)
@@ -7,6 +8,21 @@
 
 An AI-powered web application that predicts movie box office success using machine learning. Built with Streamlit, scikit-learn, and Gradient Boosting models.
 
+
+## Table of Contents
+- [Features](#-features)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Requirements](#-requirements)
+- [Usage](#-usage)
+- [Model artifacts & where to get them](#-model-artifacts--where-to-get-them)
+- [Model Performance](#-model-performance)
+- [How It Works](#-how-it-works)
+- [Analytics](#-analytics)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [To-Do](#-to-do)
+- [License](#-license)
 
 
 ## ✨ Features
@@ -26,47 +42,63 @@ An AI-powered web application that predicts movie box office success using machi
 - Python 3.8 or higher
 - pip package manager
 
-### Installation
+### Clone the repository
 
-1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/movie-box-office-predictor.git
-cd movie-box-office-predictor
+git clone https://github.com/Prxnesh/Movie-Box-office-Success-Predictor.git
+cd Movie-Box-office-Success-Predictor
 ```
 
-2. **Install dependencies**
+### Create and activate a virtual environment (recommended)
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # macOS / Linux
+.\.venv\Scripts\activate  # Windows PowerShell
+pip install --upgrade pip
+```
+
+### Install dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Ensure model files exist**
-Make sure you have these files in your project directory:
+### Ensure model files exist
+
+Required model/artifact files (expected to live in project root):
 - `success_classifier_model.joblib`
 - `collection_range_model.joblib`
 - `metadata.joblib`
 - `lookup_tables.joblib`
 
-4. **Run the application**
+Where to get them:
+- Preferred: download from the repository Releases page (large files stored there) or via Git LFS if configured for this repo.
+- If Releases are not available: use `create_lookup_tables.py` to generate `lookup_tables.joblib` and follow training scripts (if provided) to regenerate the models. If you don't have training data, look for a `models-sample` or `demo` release in Releases.
+
+If model files are missing the app will fall back to safer defaults (less accurate); see Troubleshooting below.
+
+### Run the application
+
 ```bash
 streamlit run app_v2_fixed.py
 ```
 
-5. **Open your browser**
-Navigate to `http://localhost:8501`
+Open your browser at `http://localhost:8501`.
 
 ## 📦 Project Structure
 
 ```
 movie-box-office-predictor/
-├── app_v2_fixed.py              # Main Streamlit application
-├── success_classifier_model.joblib   # Trained success prediction model
-├── collection_range_model.joblib     # Trained collection prediction model
-├── metadata.joblib                   # Genre, director, actor metadata
-├── lookup_tables.joblib              # Director/actor success statistics
-├── requirements.txt                  # Python dependencies
-├── README.md                         # This file
-├── create_lookup_tables.py          # Script to generate lookup tables (optional)
-└── screenshots/                      # Application screenshots (optional)
+├── app_v2_fixed.py
+├── success_classifier_model.joblib
+├── collection_range_model.joblib
+├── metadata.joblib
+├── lookup_tables.joblib
+├── requirements.txt
+├── README.md
+├── create_lookup_tables.py
+└── screenshots/
 ```
 
 ## 📋 Requirements
@@ -82,13 +114,17 @@ joblib>=1.3.0
 plotly>=5.17.0
 ```
 
+For reproducible installs consider adding a lockfile or pinning exact versions in a `constraints.txt` or using `pyproject.toml` + a lock tool.
+
 ## 🎯 Usage
+
+Important: budgets are expected as raw USD integers (e.g. 165000000 for 165 million USD). Example CSV and examples below use raw USD values.
 
 ### Single Movie Prediction
 
 1. Navigate to **"🎬 Single Prediction"** from the sidebar
 2. Fill in movie details:
-   - Budget (in millions USD)
+   - Budget (in USD, integer)
    - Expected IMDB rating
    - Duration (minutes)
    - Genre
@@ -105,15 +141,16 @@ plotly>=5.17.0
 ### Batch Predictions
 
 1. Navigate to **"📊 Batch Predictions"**
-2. Upload a CSV file with these columns:
-   - `budget` - Movie budget in USD
-   - `imdb_score` - Expected rating (1-10)
-   - `duration` - Runtime in minutes
-   - `genre_main` - Primary genre
-   - `director_name` - Director's name
-   - `actor_1_name` - Lead actor's name
-   - `language` - Movie language
-   - `movie_title` - (Optional) Movie title
+2. Upload a CSV file with these columns (recommended types shown):
+   - `budget` (int) - Movie budget in USD
+   - `imdb_score` (float) - Expected rating (1-10)
+   - `duration` (int) - Runtime in minutes
+   - `genre_main` (str) - Primary genre
+   - `director_name` (str) - Director's name
+   - `actor_1_name` (str) - Lead actor's name
+   - `language` (str) - Movie language
+   - `movie_title` (str, optional)
+
 3. Click **"🚀 Run Predictions"**
 4. Download results as CSV
 
@@ -123,6 +160,13 @@ plotly>=5.17.0
 movie_title,budget,imdb_score,duration,genre_main,director_name,actor_1_name,language
 Interstellar,165000000,8.6,169,Sci-Fi,Christopher Nolan,Matthew McConaughey,English
 The Dark Knight,185000000,9.0,152,Action,Christopher Nolan,Christian Bale,English
+```
+
+### Example output CSV row (columns produced by the app)
+
+```
+movie_title,budget,imdb_score,duration,genre_main,director_name,actor_1_name,language,predicted_success,collection_range,confidence,prob_blockbuster,prob_hit,prob_flop
+Interstellar,165000000,8.6,169,Sci-Fi,Christopher Nolan,Matthew McConaughey,English,Blockbuster,>$300M,0.92,0.90,0.08,0.02
 ```
 
 ## 🧪 Testing
@@ -135,10 +179,10 @@ Use the **Interstellar Test** on the home page:
 3. Click **"Run Interstellar Test"**
 4. Verify prediction matches expected results
 
-### Command Line Test
+### Command Line Test (example)
 
 ```bash
-python -c "
+python - <<'PY'
 import joblib, pandas as pd, numpy as np
 
 model = joblib.load('success_classifier_model.joblib')
@@ -149,8 +193,8 @@ budget = 165_000_000
 rating = 8.6
 duration = 169
 
-director_stats = lookup['director_lookup']['Christopher Nolan']
-actor_stats = lookup['actor_lookup']['Matthew McConaughey']
+director_stats = lookup['director_lookup'].get('Christopher Nolan', {'log_director_success': 0.0, 'director_popularity': 0})
+actor_stats = lookup['actor_lookup'].get('Matthew McConaughey', {'log_actor_success': 0.0, 'actor_popularity': 0})
 
 input_data = pd.DataFrame({
     'budget': [budget],
@@ -159,33 +203,35 @@ input_data = pd.DataFrame({
     'budget_per_minute': [budget/duration],
     'log_budget': [np.log1p(budget)],
     'rating_budget_interaction': [rating * np.log1p(budget)],
-    'log_director_success': [director_stats['log_director_success']],
-    'log_actor_success': [actor_stats['log_actor_success']],
+    'log_director_success': [director_stats.get('log_director_success', 0.0)],
+    'log_actor_success': [actor_stats.get('log_actor_success', 0.0)],
     'genre_main': ['Sci-Fi'],
     'director_name': ['Christopher Nolan'],
     'actor_1_name': ['Matthew McConaughey'],
     'language': ['English'],
     'rating_tier': ['High'],
     'budget_tier': ['Ultra'],
-    'director_popularity': [str(director_stats['director_popularity'])],
-    'actor_popularity': [str(actor_stats['actor_popularity'])]
+    'director_popularity': [str(director_stats.get('director_popularity', 0))],
+    'actor_popularity': [str(actor_stats.get('actor_popularity', 0))]
 })
 
 pred = model.predict(input_data)[0]
 print(f'Prediction: {pred}')
-"
+PY
 ```
 
 ## 📊 Model Performance
 
 ### Success Classifier
-- **Accuracy**: 73.45%
+- **Accuracy**: 73.45% (reported on validation/test split)
 - **Classes**: Blockbuster, Hit, Flop
 - **Algorithm**: Gradient Boosting
 
+Please consider adding class-wise precision/recall/F1 and the dataset size / split used to compute these metrics in future updates for reproducibility.
+
 ### Collection Range Predictor
 - **Accuracy**: 79.12%
-- **Predicts**: Revenue ranges
+- **Predicts**: Revenue ranges (binned)
 - **Algorithm**: Gradient Boosting
 
 ### Key Features Used
@@ -204,17 +250,17 @@ print(f'Prediction: {pred}')
 
 ### Feature Engineering
 
-The model uses several engineered features:
+The model uses several engineered features (copy-paste friendly):
 
 ```python
 # Derived features
 budget_per_minute = budget / duration
-log_budget = log(budget + 1)
-rating_budget_interaction = rating × log_budget
+log_budget = np.log1p(budget)
+rating_budget_interaction = rating * log_budget
 
 # Categorical tiers
 rating_tier = 'High' if rating >= 7.5 else 'Medium' if rating >= 6.0 else 'Low'
-budget_tier = 'Ultra' if budget >= 150M else 'High' if budget >= 60M else 'Medium' if budget >= 20M else 'Low'
+budget_tier = 'Ultra' if budget >= 150_000_000 else 'High' if budget >= 60_000_000 else 'Medium' if budget >= 20_000_000 else 'Low'
 ```
 
 ### Director/Actor Success Scores
@@ -241,13 +287,13 @@ If you need to retrain models or create lookup tables:
 ```bash
 # Generate lookup tables from your training data
 python create_lookup_tables.py
-
-# This creates lookup_tables.joblib with director/actor statistics
 ```
+
+This creates `lookup_tables.joblib` with director/actor statistics.
 
 ### Custom Thresholds
 
-Modify budget/rating tiers in `app_v2_fixed.py`:
+Modify budget/rating tiers in `app_v2_fixed.py` (canonical source):
 
 ```python
 # Budget tiers (in USD)
@@ -275,12 +321,13 @@ The analytics dashboard provides:
 ### Issue: "Lookup tables not found"
 
 **Solution**: 
+
 ```bash
 # Create lookup tables from your training data
 python create_lookup_tables.py
 ```
 
-Or the app will use default values (less accurate).
+If you do not have training data, download `lookup_tables.joblib` from Releases or contact the maintainer.
 
 ### Issue: "Model files not found"
 
@@ -288,6 +335,11 @@ Or the app will use default values (less accurate).
 - `success_classifier_model.joblib`
 - `collection_range_model.joblib`
 - `metadata.joblib`
+
+Recommended steps:
+1. Check Releases for model artifacts and download them.
+2. If the repo uses Git LFS for models, clone with Git LFS enabled: `git lfs install && git lfs pull`.
+3. If you have training data, run training scripts (not included by default) or contact the maintainer for guidance.
 
 ### Issue: Predictions seem inaccurate
 
@@ -311,6 +363,10 @@ Contributions are welcome! Please follow these steps:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+Please also consider adding these files to help contributors:
+- `CONTRIBUTING.md` (how to run tests, coding style, PR process)
+- `CODE_OF_CONDUCT.md`
+
 ### Development Guidelines
 
 - Follow PEP 8 style guidelines
@@ -326,23 +382,22 @@ Contributions are welcome! Please follow these steps:
 - [ ] Support for multiple actors
 - [ ] Historical trend analysis
 - [ ] API endpoint for predictions
-- [ ] Docker containerization
+- [ ] Docker containerization (see suggested Dockerfile)
 - [ ] Unit tests and CI/CD
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## 🔐 Privacy & Data Handling
 
+Uploaded CSVs are processed in-memory for predictions. By default the app does not persist uploaded CSV files to disk. If you plan to host a public demo, add a short privacy notice describing data retention and use.
 
 ## 🙏 Acknowledgments
 
 - Dataset: [IMDb Movie Database](https://www.imdb.com/) 
 - Inspiration: Box office analysis and prediction research
 - Built with: Streamlit, scikit-learn, Plotly
-
-
-
 
 
 ## 🌟 Show Your Support
@@ -353,4 +408,5 @@ Give a ⭐️ if this project helped you!
 
 **Made with ❤️ and Python**
 
-*Last Updated: November 2024*
+*Last Updated: auto-generated from repo commit date*
+```
