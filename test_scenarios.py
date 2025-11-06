@@ -69,3 +69,4 @@ test_movie(165, 8.0, 169, 'Sci-Fi', 'Steven Spielberg', 'Tom Hanks')
 
 # Unknown director with same specs
 test_movie(165, 8.6, 169, 'Sci-Fi', 'Unknown', 'Unknown')
+# end of test_scenarios.py
