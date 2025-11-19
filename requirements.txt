@@ -19,24 +19,3 @@ streamlit-searchbox==0.1.7
 # Optional (for clean data I/O, debugging)
 matplotlib==3.9.2
 seaborn==0.13.2
-# Core
-streamlit==1.39.0
-pandas==2.2.3
-numpy==1.26.4
-scikit-learn==1.5.2
-joblib==1.4.2
-
-# ML & Data Handling
-imbalanced-learn==0.12.3
-xgboost==2.1.1
-
-# Visualization
-plotly==5.24.1
-
-# UI Enhancements
-streamlit-option-menu==0.3.13
-streamlit-searchbox==0.1.7
-
-# Optional (for clean data I/O, debugging)
-matplotlib==3.9.2
-seaborn==0.13.2

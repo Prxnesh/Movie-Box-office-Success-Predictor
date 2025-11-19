@@ -30,10 +30,10 @@ An AI-powered web application that predicts movie box office success using machi
 - 🎯 **Single Movie Predictions** - Predict box office success for individual movies
 - 📊 **Batch Processing** - Upload CSV files to predict multiple movies at once
 - 📈 **Analytics Dashboard** - Visualize prediction history and insights
-- 🔍 **Movie Comparison** - Compare different movie scenarios side-by-side
+- ⚖️ **Movie Comparison** - Compare different movie scenarios side-by-side (New in V3!)
 - 📥 **Export Results** - Download predictions as CSV files
 - 🧪 **Built-in Testing** - Test with famous movies like Interstellar
-- 🎨 **Interactive UI** - Modern, responsive design with real-time feedback
+- 🎨 **Premium UI** - Modern dark theme with responsive design (New in V3!)
 
 ## 🚀 Quick Start
 
@@ -81,7 +81,7 @@ If model files are missing the app will fall back to safer defaults (less accura
 ### Run the application
 
 ```bash
-streamlit run app_v2_fixed.py
+streamlit run app_v3.py
 ```
 
 Open your browser at `http://localhost:8501`.
@@ -90,7 +90,7 @@ Open your browser at `http://localhost:8501`.
 
 ```
 movie-box-office-predictor/
-├── app_v2_fixed.py
+├── app_v3.py
 ├── success_classifier_model.joblib
 ├── collection_range_model.joblib
 ├── metadata.joblib
@@ -377,7 +377,7 @@ Please also consider adding these files to help contributors:
 ## 📝 To-Do
 
 - [ ] Add SHAP values for prediction explainability
-- [ ] Implement movie comparison feature
+- [x] Implement movie comparison feature
 - [ ] Add more visualizations (ROI calculator, budget optimizer)
 - [ ] Support for multiple actors
 - [ ] Historical trend analysis
