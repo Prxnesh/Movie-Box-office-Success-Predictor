@@ -1,4 +1,4 @@
-# app_v3.py - V3 with Enhanced UI/UX and Movie Comparison
+# app_v3.py - V4 with Production Tools & Reporting
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -7,11 +7,16 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
 
+# V4 Imports
+from budget_optimizer import optimize_budget
+from release_date_advisor import suggest_release_date
+from report_generator import create_pdf, get_download_link
+
 # ====================
 # CONFIGURATION & THEME
 # ====================
 st.set_page_config(
-    page_title="Movie Box Office AI V3",
+    page_title="Movie Box Office AI V4",
     page_icon="🎬",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -191,17 +196,17 @@ def sidebar_nav():
     with st.sidebar:
         st.image("https://img.icons8.com/3d-fluency/94/movie-projector.png", width=80)
         st.title("Box Office AI")
-        st.caption("v3.0.0 | Premium Edition")
+        st.caption("v4.0.0 | Production Edition")
         st.markdown("---")
         
         selected = st.radio(
             "Navigate",
-            ["Dashboard", "Predictor", "Comparator", "Batch Analysis", "Insights"],
+            ["Dashboard", "Predictor", "Comparator", "💰 Budget Optimizer", "📅 Release Advisor", "📊 Benchmarking", "Batch Analysis"],
             label_visibility="collapsed"
         )
         
         st.markdown("---")
-        st.info("💡 **Tip:** Use the Comparator to simulate 'What If' scenarios.")
+        st.info("💡 **Tip:** Use the Budget Optimizer to maximize ROI.")
         
         return selected
 
@@ -249,11 +254,13 @@ def render_home():
     
     st.markdown("---")
     st.markdown("### 🚀 Quick Actions")
-    c1, c2 = st.columns(2)
+    c1, c2, c3 = st.columns(3)
     with c1:
         st.info("👉 **Go to Predictor** to analyze a single movie concept.")
     with c2:
         st.info("👉 **Go to Comparator** to choose between two scripts/stars.")
+    with c3:
+        st.info("👉 **Go to Budget Optimizer** to fine-tune your spending.")
 
 def render_predictor():
     st.markdown("# 🔮 Success Predictor")
@@ -315,6 +322,21 @@ def render_predictor():
                         col_a, col_b = st.columns(2)
                         col_a.metric("Director", f"{d_stats['log_director_success']:.1f}")
                         col_b.metric("Actor", f"{a_stats['log_actor_success']:.1f}")
+                        
+                        # Report Generation
+                        st.markdown("---")
+                        report_data = {
+                            "Title": title, "Budget": f"${budget}M", "Genre": genre,
+                            "Director": director, "Actor": actor, "Rating": rating
+                        }
+                        results_data = {
+                            "success": success, "collection": collection, 
+                            "confidence": f"{probs.max()*100:.1f}%",
+                            "dir_score": f"{d_stats['log_director_success']:.1f}",
+                            "act_score": f"{a_stats['log_actor_success']:.1f}"
+                        }
+                        pdf_bytes = create_pdf(report_data, results_data)
+                        st.markdown(get_download_link(pdf_bytes, f"{title}_report.pdf"), unsafe_allow_html=True)
                         
                     except Exception as e:
                         st.error(f"Prediction Error: {e}")
@@ -406,6 +428,66 @@ def render_comparator():
         except Exception as e:
             st.error(f"Comparison Error: {e}")
 
+def render_budget_optimizer():
+    st.markdown("# 💰 Budget Optimizer")
+    st.info("AI-driven suggestions to maximize your Return on Investment.")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        budget = st.number_input("Proposed Budget ($M)", 1.0, 500.0, 50.0, 5.0)
+        rating = st.slider("Target Rating", 1.0, 10.0, 7.0, 0.1)
+    with col2:
+        genre = st.selectbox("Genre", metadata['genres'])
+        
+    if st.button("🚀 Optimize"):
+        # Get base prediction first
+        input_data, _, _ = engineer_features(
+            budget*1e6, rating, 120, genre, '(Other/New)', '(Other/New)', 'English'
+        )
+        collection_pred = collection_model.predict(input_data)[0]
+        
+        optimize_budget(budget*1e6, rating, genre, collection_pred)
+
+def render_release_advisor():
+    st.markdown("# 📅 Release Date Advisor")
+    st.info("Find the perfect release window based on historical seasonality.")
+    
+    genre = st.selectbox("Select Genre", metadata['genres'])
+    if st.button("🔍 Find Best Dates"):
+        suggest_release_date(genre)
+
+def render_benchmarking():
+    st.markdown("# 📊 Market Benchmarking")
+    st.info("Compare your concept against industry standards.")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        budget = st.number_input("Your Budget ($M)", 1.0, 500.0, 50.0)
+        genre = st.selectbox("Genre", metadata['genres'])
+    
+    # Mock data for benchmarking (since we don't have the raw training data loaded)
+    benchmarks = {
+        'Action': {'avg_budget': 80, 'avg_rating': 6.5},
+        'Sci-Fi': {'avg_budget': 100, 'avg_rating': 6.8},
+        'Drama': {'avg_budget': 30, 'avg_rating': 7.0},
+        'Comedy': {'avg_budget': 40, 'avg_rating': 6.2},
+        'Horror': {'avg_budget': 20, 'avg_rating': 5.8}
+    }
+    
+    if st.button("📉 Compare"):
+        avg = benchmarks.get(genre, {'avg_budget': 50, 'avg_rating': 6.5})
+        
+        c1, c2 = st.columns(2)
+        with c1:
+            st.metric("Budget vs Avg", f"${budget}M", delta=f"${budget - avg['avg_budget']}M", delta_color="inverse")
+        with c2:
+            st.metric("Genre Avg Budget", f"${avg['avg_budget']}M")
+            
+        st.bar_chart(pd.DataFrame({
+            'Metric': ['Your Budget', 'Genre Avg'],
+            'Value': [budget, avg['avg_budget']]
+        }).set_index('Metric'))
+
 def render_batch():
     st.markdown("# 📊 Batch Analysis")
     st.info("Upload CSV to process multiple movies at once.")
@@ -416,10 +498,6 @@ def render_batch():
         if st.button("Process Batch"):
             st.success("Batch processing simulated (logic same as V2)")
 
-def render_analytics():
-    st.markdown("# 📈 Analytics")
-    st.info("Historical data analysis coming soon.")
-
 # ====================
 # MAIN APP LOGIC
 # ====================
@@ -428,5 +506,7 @@ page = sidebar_nav()
 if page == "Dashboard": render_home()
 elif page == "Predictor": render_predictor()
 elif page == "Comparator": render_comparator()
+elif page == "💰 Budget Optimizer": render_budget_optimizer()
+elif page == "📅 Release Advisor": render_release_advisor()
+elif page == "📊 Benchmarking": render_benchmarking()
 elif page == "Batch Analysis": render_batch()
-elif page == "Insights": render_analytics()
